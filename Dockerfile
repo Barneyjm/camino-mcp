@@ -11,8 +11,10 @@ COPY tsconfig.json ./
 COPY src ./src
 
 # Install all dependencies (including dev dependencies for building)
-# The prepare script will run npm run build automatically
 RUN npm ci
+
+# Build the TypeScript code manually (no longer in prepare script)
+RUN npm run build
 
 # Production stage
 FROM node:18-alpine AS production
@@ -37,7 +39,9 @@ USER mcp
 
 # Set environment variables
 ENV NODE_ENV=production
-ENV MCP_DEBUG=false
 
-# Start the MCP server
-CMD ["node", "build/index.js"]
+# CAMINO_API_KEY must be provided at runtime
+# Example: docker run -e CAMINO_API_KEY=your_key_here camino-mcp
+
+# Start the MCP server using Docker entry point
+CMD ["node", "build/docker-entry.js"]

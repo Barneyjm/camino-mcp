@@ -9,7 +9,6 @@ import {
   ApiResponse,
   CaminoApiConfig
 } from '../types/index.js';
-import { Logger } from '../utils/logger.js';
 
 export class CaminoApiService {
   private client: AxiosInstance;
@@ -43,7 +42,7 @@ export class CaminoApiService {
       });
       return { success: true, data: response.data };
     } catch (error: any) {
-      Logger.error('Query execution failed', error);
+      console.error('Query execution failed:', error.message);
       return {
         success: false,
         error: error.response?.data?.detail || error.message,
@@ -66,7 +65,7 @@ export class CaminoApiService {
       });
       return { success: true, data: response.data };
     } catch (error: any) {
-      Logger.error('Search execution failed', error);
+      console.error('Search execution failed:', error.message);
       return {
         success: false,
         error: error.response?.data?.detail || error.message,
@@ -96,7 +95,7 @@ export class CaminoApiService {
       const response = await this.client.post('/relationship', requestBody);
       return { success: true, data: response.data };
     } catch (error: any) {
-      Logger.error('Spatial relationship calculation failed', error);
+      console.error('Spatial relationship calculation failed:', error.message);
       return {
         success: false,
         error: error.response?.data?.detail || error.message,

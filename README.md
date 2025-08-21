@@ -57,11 +57,11 @@ Install directly from the Smithery MCP registry:
 # Install via Smithery
 smithery install camino-location-server
 
-# Or add to your Claude Desktop config
-smithery add camino-location-server
+# Configure your API key
+smithery config camino-location-server apiKey=your_api_key_here
 ```
 
-#### Option 2: Manual Installation
+#### Option 2: Local Development
 
 1. Clone this repository:
 ```bash
@@ -74,15 +74,13 @@ cd camino-mcp
 npm install
 ```
 
-3. Set up environment variables:
+3. Run in development mode:
 ```bash
-cp .env.example .env
-# Edit .env and add your Camino API key
-```
+# Set your API key
+export CAMINO_API_KEY=your_api_key_here
 
-4. Build the server:
-```bash
-npm run build
+# Start development server
+npm run dev
 ```
 
 ### Usage
@@ -90,21 +88,25 @@ npm run build
 #### With Claude Desktop
 
 ##### Via Smithery (Automatic):
-If you installed via Smithery, configuration is handled automatically. Just set your API key:
+If you installed via Smithery, it will automatically appear in Claude Desktop. Configuration:
 
 ```bash
-smithery config camino-location-server CAMINO_API_KEY=your_api_key_here
+# Set your API key
+smithery config camino-location-server apiKey=your_api_key_here
+
+# Optional: customize base URL
+smithery config camino-location-server baseUrl=https://api.getcamino.ai
 ```
 
 ##### Manual Configuration:
-Add this server to your Claude Desktop configuration:
+For local development, add this server to your Claude Desktop configuration:
 
 ```json
 {
   "mcpServers": {
     "camino-location": {
-      "command": "node",
-      "args": ["/path/to/camino-mcp/build/index.js"],
+      "command": "npx",
+      "args": ["@smithery/cli", "run", "/path/to/camino-mcp"],
       "env": {
         "CAMINO_API_KEY": "your_api_key_here"
       }
@@ -116,11 +118,11 @@ Add this server to your Claude Desktop configuration:
 #### Standalone Usage
 
 ```bash
-# Development mode
+# Development mode with Smithery CLI
 npm run dev
 
-# Production mode  
-npm start
+# Test server structure locally
+npm run build && node test-all-endpoints.js
 ```
 
 ## Configuration
@@ -250,9 +252,14 @@ Build and run using Docker:
 # Build the image
 docker build -t camino-mcp .
 
-# Run the container
-docker run -e CAMINO_API_KEY=your_key_here camino-mcp
+# Run the container (for MCP stdio communication)
+docker run -i -e CAMINO_API_KEY=your_key_here camino-mcp
+
+# Or run interactively for testing
+docker run -it -e CAMINO_API_KEY=your_key_here camino-mcp
 ```
+
+**Note:** Docker deployment uses a traditional MCP server (stdio transport) rather than the Smithery runtime. This is suitable for production environments where you want direct container control.
 
 ## License
 
