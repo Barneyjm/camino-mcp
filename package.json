@@ -19,7 +19,12 @@
     "location",
     "spatial",
     "ai",
-    "camino"
+    "camino",
+    "geocoding",
+    "routing",
+    "maps",
+    "openstreetmap",
+    "smithery"
   ],
   "author": "Camino AI",
   "license": "MIT",
@@ -42,5 +47,20 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Barneyjm/camino-mcp.git"
+  },
+  "homepage": "https://getcamino.ai",
+  "bugs": {
+    "url": "https://github.com/Barneyjm/camino-mcp/issues"
+  },
+  "mcp": {
+    "server": {
+      "name": "camino-location-server",
+      "description": "Comprehensive location intelligence and spatial reasoning for AI agents",
+      "version": "1.0.0"
+    }
   }
 }

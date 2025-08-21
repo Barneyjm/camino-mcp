@@ -49,10 +49,24 @@ Get detailed route information between two points.
 
 ### Installation
 
+#### Option 1: Via Smithery (Recommended)
+
+Install directly from the Smithery MCP registry:
+
+```bash
+# Install via Smithery
+smithery install camino-location-server
+
+# Or add to your Claude Desktop config
+smithery add camino-location-server
+```
+
+#### Option 2: Manual Installation
+
 1. Clone this repository:
 ```bash
-git clone <repository-url>
-cd camino-mcp-server
+git clone https://github.com/Barneyjm/camino-mcp.git
+cd camino-mcp
 ```
 
 2. Install dependencies:
@@ -62,7 +76,7 @@ npm install
 
 3. Set up environment variables:
 ```bash
-cp src/.env.example .env
+cp .env.example .env
 # Edit .env and add your Camino API key
 ```
 
@@ -75,6 +89,14 @@ npm run build
 
 #### With Claude Desktop
 
+##### Via Smithery (Automatic):
+If you installed via Smithery, configuration is handled automatically. Just set your API key:
+
+```bash
+smithery config camino-location-server CAMINO_API_KEY=your_api_key_here
+```
+
+##### Manual Configuration:
 Add this server to your Claude Desktop configuration:
 
 ```json
@@ -82,7 +104,7 @@ Add this server to your Claude Desktop configuration:
   "mcpServers": {
     "camino-location": {
       "command": "node",
-      "args": ["/path/to/camino-mcp-server/build/index.js"],
+      "args": ["/path/to/camino-mcp/build/index.js"],
       "env": {
         "CAMINO_API_KEY": "your_api_key_here"
       }
@@ -182,9 +204,9 @@ This server integrates with the Camino AI backend API. All tools make requests t
 
 - `/query` - Natural language place search
 - `/search` - Nominatim place search  
-- `/spatial/relationship` - Spatial calculations
-- `/spatial/context` - Place context analysis
-- `/spatial/journey` - Journey planning
+- `/relationship` - Spatial calculations
+- `/context` - Place context analysis
+- `/journey` - Journey planning
 - `/route` - Route planning
 
 All requests use the `X-API-Key` header for authentication.
@@ -203,6 +225,35 @@ The server includes comprehensive error handling:
 - **Enable Debug**: Set `MCP_DEBUG=true` or `NODE_ENV=development`
 - **Log Levels**: INFO, DEBUG, ERROR with timestamps and structured data
 
+## Deployment
+
+### Smithery Registry
+
+This MCP server is available on [Smithery](https://smithery.ai), making it easy to discover and install:
+
+```bash
+# List all available MCP servers
+smithery list
+
+# Install Camino location server
+smithery install camino-location-server
+
+# Configure your API key
+smithery config camino-location-server CAMINO_API_KEY=your_key_here
+```
+
+### Docker Deployment
+
+Build and run using Docker:
+
+```bash
+# Build the image
+docker build -t camino-mcp .
+
+# Run the container
+docker run -e CAMINO_API_KEY=your_key_here camino-mcp
+```
+
 ## License
 
 MIT License - see LICENSE file for details.
@@ -211,5 +262,6 @@ MIT License - see LICENSE file for details.
 
 For support and questions:
 - Documentation: [docs.getcamino.ai](https://docs.getcamino.ai)
-- Issues: Create an issue in this repository
+- Issues: [GitHub Issues](https://github.com/Barneyjm/camino-mcp/issues)
+- Repository: [GitHub](https://github.com/Barneyjm/camino-mcp)
 - Email: support@getcamino.ai

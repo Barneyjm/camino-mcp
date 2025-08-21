@@ -82,7 +82,18 @@ export class CaminoApiService {
 
   async calculateSpatialRelationship(request: SpatialRelationshipRequest): Promise<ApiResponse> {
     try {
-      const response = await this.client.post('/spatial/relationship', request);
+      const requestBody = {
+        start: {
+          lat: request.start_latitude,
+          lon: request.start_longitude
+        },
+        end: {
+          lat: request.end_latitude,
+          lon: request.end_longitude
+        },
+        include: request.include
+      };
+      const response = await this.client.post('/relationship', requestBody);
       return { success: true, data: response.data };
     } catch (error: any) {
       Logger.error('Spatial relationship calculation failed', error);
@@ -105,7 +116,15 @@ export class CaminoApiService {
 
   async getPlaceContext(request: PlaceContextRequest): Promise<ApiResponse> {
     try {
-      const response = await this.client.post('/spatial/context', request);
+      const requestBody = {
+        location: {
+          lat: request.latitude,
+          lon: request.longitude
+        },
+        radius: request.radius,
+        context: request.context
+      };
+      const response = await this.client.post('/context', requestBody);
       return { success: true, data: response.data };
     } catch (error: any) {
       Logger.error('Place context retrieval failed', error);
@@ -126,7 +145,18 @@ export class CaminoApiService {
 
   async planJourney(request: JourneyPlanningRequest): Promise<ApiResponse> {
     try {
-      const response = await this.client.post('/spatial/journey', request);
+      const requestBody = {
+        waypoints: request.waypoints.map(wp => ({
+          lat: wp.lat,
+          lon: wp.lon,
+          purpose: wp.purpose
+        })),
+        constraints: {
+          transport: request.transport_mode || 'walking',
+          time_budget: request.time_budget
+        }
+      };
+      const response = await this.client.post('/journey', requestBody);
       return { success: true, data: response.data };
     } catch (error: any) {
       Logger.error('Journey planning failed', error);

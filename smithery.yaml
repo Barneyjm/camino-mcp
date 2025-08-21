@@ -1,0 +1,57 @@
+version: 1
+
+# Smithery configuration for Camino AI MCP Server
+name: camino-location-server
+description: "Comprehensive location intelligence MCP server with 6 spatial reasoning tools for AI agents"
+version: "1.0.0"
+author: "Camino AI"
+license: "MIT"
+
+# Server configuration
+start:
+  command: ["node", "build/index.js"]
+  environment:
+    NODE_ENV: "production"
+    MCP_DEBUG: "false"
+
+# Required environment variables that users need to provide
+env_vars:
+  - name: CAMINO_API_KEY
+    description: "Your Camino AI API key (required)"
+    required: true
+  - name: CAMINO_API_BASE_URL
+    description: "API base URL (default: https://api.getcamino.ai)"
+    required: false
+    default: "https://api.getcamino.ai"
+
+# Tags for discovery
+tags:
+  - location
+  - spatial
+  - maps
+  - geocoding
+  - routing
+  - ai
+  - openstreetmap
+
+# Capabilities
+capabilities:
+  tools:
+    - name: "camino_query"
+      description: "Natural language place search with AI ranking"
+    - name: "camino_search" 
+      description: "Specific place search using Nominatim"
+    - name: "camino_spatial_relationship"
+      description: "Calculate spatial relationships between points"
+    - name: "camino_place_context"
+      description: "Get context-aware location information"
+    - name: "camino_journey_planning"
+      description: "Multi-waypoint journey planning with optimization"
+    - name: "camino_route_planning"
+      description: "Detailed route planning with turn-by-turn directions"
+
+# Documentation links
+links:
+  homepage: "https://getcamino.ai"
+  documentation: "https://docs.getcamino.ai"
+  repository: "https://github.com/Barneyjm/camino-mcp"
