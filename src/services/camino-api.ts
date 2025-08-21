@@ -59,7 +59,7 @@ export class CaminoApiService {
   async executeSearch(request: SearchRequest): Promise<ApiResponse> {
     try {
       const response = await this.client.post('/search', null, {
-        params: { 
+        params: {
           q: request.query
         }
       });
@@ -100,13 +100,13 @@ export class CaminoApiService {
         success: false,
         error: error.response?.data?.detail || error.message,
         data: {
-          start_location: { 
-            lat: request.start_latitude, 
-            lon: request.start_longitude 
+          start_location: {
+            lat: request.start_latitude,
+            lon: request.start_longitude
           },
-          end_location: { 
-            lat: request.end_latitude, 
-            lon: request.end_longitude 
+          end_location: {
+            lat: request.end_latitude,
+            lon: request.end_longitude
           }
         }
       };
@@ -126,14 +126,14 @@ export class CaminoApiService {
       const response = await this.client.post('/context', requestBody);
       return { success: true, data: response.data };
     } catch (error: any) {
-      Logger.error('Place context retrieval failed', error);
+      console.error('Place context retrieval failed', error);
       return {
         success: false,
         error: error.response?.data?.detail || error.message,
         data: {
-          location: { 
-            lat: request.latitude, 
-            lon: request.longitude 
+          location: {
+            lat: request.latitude,
+            lon: request.longitude
           },
           relevant_places: {},
           total_places_found: 0
@@ -158,7 +158,7 @@ export class CaminoApiService {
       const response = await this.client.post('/journey', requestBody);
       return { success: true, data: response.data };
     } catch (error: any) {
-      Logger.error('Journey planning failed', error);
+      console.error('Journey planning failed', error);
       return {
         success: false,
         error: error.response?.data?.detail || error.message,
@@ -184,18 +184,18 @@ export class CaminoApiService {
       });
       return { success: true, data: response.data };
     } catch (error: any) {
-      Logger.error('Route planning failed', error);
+      console.error('Route planning failed', error);
       return {
         success: false,
         error: error.response?.data?.detail || error.message,
         data: {
-          start_location: { 
-            lat: request.start_latitude, 
-            lon: request.start_longitude 
+          start_location: {
+            lat: request.start_latitude,
+            lon: request.start_longitude
           },
-          end_location: { 
-            lat: request.end_latitude, 
-            lon: request.end_longitude 
+          end_location: {
+            lat: request.end_latitude,
+            lon: request.end_longitude
           },
           mode: request.mode || 'car'
         }
