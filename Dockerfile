@@ -1,29 +1,39 @@
-FROM node:18-alpine
+# Build stage
+FROM node:18-alpine AS builder
 
-# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY tsconfig.json ./
+
+# Copy source code first
+COPY src ./src
+
+# Install all dependencies (including dev dependencies for building)
+# The prepare script will run npm run build automatically
+RUN npm ci
+
+# Production stage
+FROM node:18-alpine AS production
+
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install only production dependencies (skip prepare script since we already built)
+RUN npm ci --only=production --ignore-scripts && npm cache clean --force
 
-# Copy source code
-COPY . .
-
-# Build the TypeScript code
-RUN npm run build
+# Copy built application from builder stage
+COPY --from=builder /app/build ./build
 
 # Create non-root user for security
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S mcp -u 1001
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S mcp -u 1001
 
 # Change to non-root user
 USER mcp
-
-# Expose the MCP server (though it runs on stdio)
-EXPOSE 3000
 
 # Set environment variables
 ENV NODE_ENV=production
